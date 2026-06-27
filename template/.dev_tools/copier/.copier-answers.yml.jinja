@@ -1,0 +1,10 @@
+# This file is managed by Copier.
+_src_path: {{ _copier_conf.src_path | string | tojson }}
+{% if _copier_conf.vcs_ref_hash %}
+_commit: {{ _copier_conf.vcs_ref_hash | string | tojson }}
+{% endif %}
+project_name: {{ project_name | tojson }}
+project_slug: {{ project_slug | tojson }}
+project_description: {{ project_description | tojson }}
+python_version: {{ python_version | tojson }}
+project_version: {{ project_version | tojson }}

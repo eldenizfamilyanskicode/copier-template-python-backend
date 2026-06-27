@@ -1,0 +1,62 @@
+[project]
+name = {{ project_slug | tojson }}
+version = {{ project_version | tojson }}
+description = {{ project_description | tojson }}
+requires-python = ">={{ python_version }}"
+dependencies = [
+    "base-pydantic-schemas",
+    "base-typed-id",
+    "base-typed-int",
+    "base-typed-string",
+    "dependency-injector",
+    "typed-time-provider",
+]
+
+[dependency-groups]
+dev = [
+    "mypy",
+    "pyright",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 88
+target-version = "py{{ python_version | replace('.', '') }}"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+fixable = ["ALL"]
+
+[tool.mypy]
+python_version = "{{ python_version }}"
+strict = true
+mypy_path = "."
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = [
+    "app.containers.*",
+]
+disable_error_code = ["assignment"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+exclude = [
+    ".venv",
+    "venv",
+    "node_modules",
+    "**/__pycache__",
+    "dist",
+    "build",
+    ".dev_tools",
+]

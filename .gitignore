@@ -1,0 +1,16 @@
+.venv/
+venv/
+/.vscode/
+/.dev_tools/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.pyright/
+uv.lock
+dist/
+build/
+.DS_Store
+Thumbs.db

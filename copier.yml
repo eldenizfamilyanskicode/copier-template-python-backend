@@ -1,0 +1,61 @@
+_subdirectory: template
+_templates_suffix: .jinja
+_answers_file: .dev_tools/copier/.copier-answers.yml
+_exclude:
+  - "**/__pycache__"
+  - "**/*.py[co]"
+  - ".mypy_cache"
+  - ".pytest_cache"
+  - ".ruff_cache"
+  - ".venv"
+  - "venv"
+  - ".vscode"
+  - "uv.lock"
+  - ".DS_Store"
+  - "Thumbs.db"
+
+project_name:
+  type: str
+  help: Human-readable project name.
+  default: Python Backend
+
+project_slug:
+  type: str
+  help: Python distribution name for pyproject.toml.
+  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
+  validator: >-
+    {% if not project_slug %}
+    project_slug is required.
+    {% elif project_slug != project_slug | lower or " " in project_slug or "_" in project_slug or not project_slug.replace("-", "").isalnum() or not project_slug[0].isalpha() %}
+    project_slug must be lowercase kebab-case and start with a letter.
+    {% endif %}
+
+project_description:
+  type: str
+  help: Short project description.
+  default: Neutral Python backend application.
+
+python_version:
+  type: str
+  help: Python version used by generated tooling configuration.
+  default: "3.14"
+  choices:
+    - "3.14"
+    - "3.13"
+    - "3.12"
+
+project_version:
+  type: str
+  help: Initial package version.
+  default: "0.1.0"
+
+_message_after_copy: |
+  Project {{ project_slug }} was generated.
+
+  Next steps:
+    cd {{ _copier_conf.dst_path }}
+    uv sync
+    uv run ruff check .
+    uv run mypy .
+    uv run pyright
+    uv run pytest
