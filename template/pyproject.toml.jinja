@@ -2,6 +2,7 @@
 name = {{ project_slug | tojson }}
 version = {{ project_version | tojson }}
 description = {{ project_description | tojson }}
+readme = "README.md"
 requires-python = ">={{ python_version }}"
 dependencies = [
     "base-pydantic-schemas",
@@ -32,6 +33,10 @@ target-version = "py{{ python_version | replace('.', '') }}"
 select = ["E", "F", "I", "UP", "B", "SIM"]
 fixable = ["ALL"]
 
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
 [tool.mypy]
 python_version = "{{ python_version }}"
 strict = true
@@ -41,6 +46,7 @@ explicit_package_bases = true
 [[tool.mypy.overrides]]
 module = [
     "app.containers.*",
+    "src.containers.*",
 ]
 disable_error_code = ["assignment"]
 
