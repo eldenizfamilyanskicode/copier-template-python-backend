@@ -1,0 +1,22 @@
+# AGENTS.md instructions
+
+To work in this local environment, first call `uv run prompt_forge agent_help`
+and follow its loading rules.
+
+## Domain primitives
+
+Do not use raw `str`, `int`, or `uuid.UUID` for domain/business-owned values.
+Use the project primitives from `app/schemas/typings/` instead.
+
+- IDs must use primitives from `app/schemas/typings/ids.py`.
+- Domain strings must use primitives from `app/schemas/typings/strings.py`.
+- Domain integers must use primitives from `app/schemas/typings/integers.py`.
+- If the required primitive does not exist yet, add a clearly named primitive to
+  the owning `app/schemas/typings/` module before using it in DTOs, documents,
+  contracts, use cases, or other business code.
+- Raw `str`, `int`, and `uuid.UUID` are allowed only at external boundaries
+  before validation/parsing, or for purely technical values that are not domain
+  data.
+
+After boundary validation, business code must receive typed primitives, not raw
+Python primitives.

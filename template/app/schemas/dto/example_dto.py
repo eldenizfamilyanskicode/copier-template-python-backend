@@ -1,9 +1,14 @@
 from base_pydantic_schemas import MutableDTO
 
+from app.schemas.typings.integers import ExampleInteger
+from app.schemas.typings.strings import ExampleString
+
 
 class ExampleInputDTO(MutableDTO):
-    value: str
+    name: ExampleString
+    count: ExampleInteger
 
 
 class ExampleOutputDTO(MutableDTO):
-    value: str
+    name: ExampleString
+    count: ExampleInteger
