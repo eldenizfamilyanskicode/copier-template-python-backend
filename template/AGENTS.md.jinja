@@ -17,6 +17,10 @@ Use the project primitives from `app/schemas/typings/` instead.
 - Raw `str`, `int`, and `uuid.UUID` are allowed only at external boundaries
   before validation/parsing, or for purely technical values that are not domain
   data.
+- Architecture policy tests may contain explicit exception lists. Do not expand
+  those exception lists by default. Architecture principles forbid adding
+  exceptions unless the author explicitly confirms that the field cannot use a
+  typed primitive.
 
 After boundary validation, business code must receive typed primitives, not raw
 Python primitives.
