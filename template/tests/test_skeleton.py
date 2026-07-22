@@ -5,8 +5,10 @@ from base_typed_id import deterministically_from_words
 from typed_time_provider import MonotonicClock, Nanoseconds, WallClock
 
 from app.containers.app import AppContainer
+from app.containers.config import ConfigContainer
 from app.containers.time_provider import TimeProviderContainer
 from app.containers.use_cases import UseCasesContainer
+from app.schemas.configurations.example_config import ExampleConfig
 from app.schemas.domain.example_document import (
     ExampleDocument,
     ExampleMicrosecondTimestampedDocument,
@@ -35,6 +37,17 @@ from app.use_cases.example_use_case import ExampleUseCase
 def test_app_container_can_be_created() -> None:
     app_container: AppContainer = AppContainer()
     app_container.check_dependencies()
+
+
+def test_config_container_builds_example_config_as_singleton() -> None:
+    config_container: ConfigContainer = ConfigContainer()
+
+    first_example_config: ExampleConfig = config_container.example_config()
+    second_example_config: ExampleConfig = config_container.example_config()
+
+    assert first_example_config is second_example_config
+    assert first_example_config.is_enabled is True
+    assert first_example_config.name == ExampleString("example")
 
 
 def test_time_provider_container_builds_default_clocks() -> None:

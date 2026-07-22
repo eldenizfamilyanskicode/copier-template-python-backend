@@ -20,6 +20,7 @@ from base_typed_string import BaseConstrainedTypedString, BaseTypedString
 
 import app.schemas.typings.booleans as boolean_typings
 import app.schemas.typings.floats as float_typings
+from app.schemas.configurations.example_config import ExampleConfig
 from app.schemas.domain.example_document import (
     ExampleDocument,
     ExampleMicrosecondTimestampedDocument,
@@ -44,6 +45,7 @@ from app.schemas.typings.prefixed_id import (
 from app.schemas.typings.strings import ExampleString
 
 EXAMPLE_SCHEMA_FILE_PATHS: tuple[str, ...] = (
+    "app/schemas/configurations/example_config.py",
     "app/schemas/dto/example_dto.py",
     "app/schemas/domain/example_document.py",
     "app/schemas/typings/booleans.py",
@@ -84,6 +86,11 @@ def test_example_dto_classes_are_kept() -> None:
     assert_class_docstring_is_kept(ExampleImmutableDTO)
     assert_class_docstring_is_kept(ExampleArbitraryMutableDTO)
     assert_class_docstring_is_kept(ExampleArbitraryImmutableDTO)
+
+
+def test_example_config_class_is_kept() -> None:
+    assert issubclass(ExampleConfig, ImmutableDTO)
+    assert_class_docstring_is_kept(ExampleConfig)
 
 
 def test_example_document_classes_are_kept() -> None:
