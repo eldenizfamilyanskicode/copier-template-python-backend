@@ -18,20 +18,39 @@ from app.containers.utilities import UtilitiesContainer
 
 
 class AppContainer(containers.DeclarativeContainer):
-    config = Container(ConfigContainer)
-    clients = Container(ClientsContainer, config=config)
-    adapters = Container(AdaptersContainer, clients=clients, config=config)
-    repositories = Container(RepositoriesContainer, adapters=adapters)
-    registries = Container(RegistriesContainer, repositories=repositories)
-    utilities = Container(UtilitiesContainer)
-    facilitators = Container(
+    config: ConfigContainer = Container(ConfigContainer)  # type: ignore[assignment]
+    clients: ClientsContainer = Container(  # type: ignore[assignment]
+        ClientsContainer,
+        config=config,
+    )
+    adapters: AdaptersContainer = Container(  # type: ignore[assignment]
+        AdaptersContainer,
+        clients=clients,
+        config=config,
+    )
+    repositories: RepositoriesContainer = Container(  # type: ignore[assignment]
+        RepositoriesContainer,
+        adapters=adapters,
+    )
+    registries: RegistriesContainer = Container(  # type: ignore[assignment]
+        RegistriesContainer,
+        repositories=repositories,
+    )
+    utilities: UtilitiesContainer = Container(  # type: ignore[assignment]
+        UtilitiesContainer
+    )
+    facilitators: FacilitatorsContainer = Container(  # type: ignore[assignment]
         FacilitatorsContainer,
         adapters=adapters,
         config=config,
     )
-    transformers = Container(TransformersContainer)
-    time_provider = Container(TimeProviderContainer)
-    use_cases = Container(
+    transformers: TransformersContainer = Container(  # type: ignore[assignment]
+        TransformersContainer
+    )
+    time_provider: TimeProviderContainer = Container(  # type: ignore[assignment]
+        TimeProviderContainer
+    )
+    use_cases: UseCasesContainer = Container(  # type: ignore[assignment]
         UseCasesContainer,
         facilitators=facilitators,
         registries=registries,
@@ -40,7 +59,18 @@ class AppContainer(containers.DeclarativeContainer):
         transformers=transformers,
         utilities=utilities,
     )
-    orchestrators = Container(OrchestratorsContainer, use_cases=use_cases)
-    pipelines = Container(PipelinesContainer, orchestrators=orchestrators)
-    operators = Container(OperatorsContainer, pipelines=pipelines)
-    gateways = Container(GatewaysContainer)
+    orchestrators: OrchestratorsContainer = Container(  # type: ignore[assignment]
+        OrchestratorsContainer,
+        use_cases=use_cases,
+    )
+    pipelines: PipelinesContainer = Container(  # type: ignore[assignment]
+        PipelinesContainer,
+        orchestrators=orchestrators,
+    )
+    operators: OperatorsContainer = Container(  # type: ignore[assignment]
+        OperatorsContainer,
+        pipelines=pipelines,
+    )
+    gateways: GatewaysContainer = Container(  # type: ignore[assignment]
+        GatewaysContainer
+    )
