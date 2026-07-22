@@ -35,3 +35,42 @@ Use the project primitives from `app/schemas/typings/` instead.
 
 After boundary validation, business code must receive typed primitives, not raw
 Python primitives.
+
+## Primitive semantic identity
+
+A typed primitive represents exactly one domain meaning. Treat every operation
+on it as a semantic boundary:
+
+- Never reconstruct the original typed primitive after validation,
+  transformation, string processing, or arithmetic. Those operations no longer
+  guarantee the original meaning.
+- A plain `str` or `int` result from an operation deliberately signals that the
+  source semantic guarantee has been lost.
+- If the result has a domain meaning, validate it and construct a different,
+  explicitly named primitive for that meaning.
+- Semantic stages must be sibling types, not an inheritance chain. For example,
+  `RawUserInput(BaseTypedString)` becomes
+  `ValidatedUserInput(BaseTypedString)` after validation; do not make
+  `ValidatedUserInput` inherit from `RawUserInput`.
+- Arithmetic destroys the source meaning. Adding a delta to
+  `CurrentTimeInSeconds(BaseTypedInt)` must produce a separately named and
+  validated destination type, never another `CurrentTimeInSeconds`.
+
+Multiple inheritance is forbidden for domain primitives. Do not use inheritance
+to combine meanings or constraints.
+
+Bad:
+
+```python
+class DivisibleByTwo(BaseTypedInt): ...
+class DivisibleByThree(BaseTypedInt): ...
+class DivisibleBySix(DivisibleByTwo, DivisibleByThree): ...
+```
+
+Good:
+
+```python
+class DivisibleByTwo(BaseTypedInt): ...
+class DivisibleByThree(BaseTypedInt): ...
+class DivisibleBySix(BaseTypedInt): ...
+```

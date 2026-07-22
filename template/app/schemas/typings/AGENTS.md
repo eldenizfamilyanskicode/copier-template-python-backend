@@ -19,6 +19,25 @@ declare it on a `BaseConstrainedTypedString` or `BaseConstrainedTypedInt`
 subclass. Do not compose reusable domain primitives from `Annotated`,
 `AfterValidator`, or `StringConstraints`.
 
+Each typed primitive represents exactly one domain meaning. Validation,
+transformation, string processing, and arithmetic are semantic boundaries. Do
+not reconstruct the source type after such an operation. Validate the result
+and construct a different, explicitly named primitive when the result has a
+domain meaning. A plain `str` or `int` result deliberately signals that the
+source semantic guarantee has been lost.
+
+Semantic stages must be sibling types. For example,
+`RawUserInput(BaseTypedString)` becomes
+`ValidatedUserInput(BaseTypedString)` after validation; do not inherit the
+validated type from the raw type. Adding a delta to
+`CurrentTimeInSeconds(BaseTypedInt)` must likewise produce a separately named
+and validated destination type.
+
+Multiple inheritance is forbidden for domain primitives. Never compose
+meanings or constraints such as
+`DivisibleBySix(DivisibleByTwo, DivisibleByThree)`. Declare the combined meaning
+as an independent type such as `DivisibleBySix(BaseTypedInt)`.
+
 Never delete the example typing files during cleanup, simplification, or
 generated project maintenance. They document the supported primitive patterns.
 
