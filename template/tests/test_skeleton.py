@@ -2,8 +2,10 @@ from io import StringIO
 from uuid import NAMESPACE_URL, uuid5
 
 from base_typed_id import deterministically_from_words
+from typed_time_provider import MonotonicClock, Nanoseconds, WallClock
 
 from app.containers.app import AppContainer
+from app.containers.time_provider import TimeProviderContainer
 from app.containers.use_cases import UseCasesContainer
 from app.schemas.domain.example_document import (
     ExampleDocument,
@@ -32,7 +34,18 @@ from app.use_cases.example_use_case import ExampleUseCase
 
 def test_app_container_can_be_created() -> None:
     app_container: AppContainer = AppContainer()
-    assert app_container is not None
+    app_container.check_dependencies()
+
+
+def test_time_provider_container_builds_default_clocks() -> None:
+    time_provider_container = TimeProviderContainer()
+    monotonic_clock: MonotonicClock[Nanoseconds] = (
+        time_provider_container.monotonic_clock()
+    )
+    wall_clock: WallClock[Nanoseconds] = time_provider_container.wall_clock()
+
+    assert monotonic_clock.preferred_time_unit_type is Nanoseconds
+    assert wall_clock.preferred_time_unit_type is Nanoseconds
 
 
 def test_use_cases_container_builds_example_use_case() -> None:

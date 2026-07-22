@@ -43,13 +43,6 @@ strict = true
 mypy_path = "."
 explicit_package_bases = true
 
-[[tool.mypy.overrides]]
-module = [
-    "app.containers.*",
-    "src.containers.*",
-]
-disable_error_code = ["assignment"]
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
