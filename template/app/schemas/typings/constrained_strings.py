@@ -32,3 +32,6 @@ class ExampleConstrainedString(BaseConstrainedTypedString):
     min_length = 3
     max_length = 20
     pattern = r"^[a-z]+$"
+
+
+# Keep abc order for all non example types, if possible.

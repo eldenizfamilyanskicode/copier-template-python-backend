@@ -49,3 +49,6 @@ class ExampleRandomId(BaseTypedId):
         assert type(generated_id) is ExampleRandomId
         assert type(restored_id) is ExampleRandomId
     """
+
+
+# Keep abc order for all non example types, if possible.

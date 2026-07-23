@@ -14,12 +14,12 @@ from base_pydantic_schemas import (
     UnixNanosecondTimestampedMixin,
     VersionedMixin,
 )
+from base_typed_float import BaseConstrainedTypedFloat, BaseTypedFloat
 from base_typed_id import BasePrefixedTypedId, BaseTypedId
 from base_typed_int import BaseConstrainedTypedInt, BaseTypedInt
 from base_typed_string import BaseConstrainedTypedString, BaseTypedString
 
 import app.schemas.typings.booleans as boolean_typings
-import app.schemas.typings.floats as float_typings
 from app.schemas.configurations.example_config import ExampleConfig
 from app.schemas.domain.example_document import (
     ExampleDocument,
@@ -34,8 +34,10 @@ from app.schemas.dto.example_dto import (
     ExampleImmutableDTO,
     ExampleMutableDTO,
 )
+from app.schemas.typings.constrained_floats import ExampleConstrainedFloat
 from app.schemas.typings.constrained_integers import ExampleConstrainedInt
 from app.schemas.typings.constrained_strings import ExampleConstrainedString
+from app.schemas.typings.floats import ExampleFloat
 from app.schemas.typings.ids import ExampleDeterministicId, ExampleRandomId
 from app.schemas.typings.integers import ExampleInt
 from app.schemas.typings.prefixed_id import (
@@ -49,6 +51,7 @@ EXAMPLE_SCHEMA_FILE_PATHS: tuple[str, ...] = (
     "app/schemas/dto/example_dto.py",
     "app/schemas/domain/example_document.py",
     "app/schemas/typings/booleans.py",
+    "app/schemas/typings/constrained_floats.py",
     "app/schemas/typings/constrained_integers.py",
     "app/schemas/typings/constrained_strings.py",
     "app/schemas/typings/floats.py",
@@ -131,23 +134,24 @@ def test_example_typing_classes_and_aliases_are_kept() -> None:
     assert ExampleDeterministicPrefixedId.uuid_version == 5
     assert issubclass(ExampleRandomPrefixedId, BasePrefixedTypedId)
     assert ExampleRandomPrefixedId.prefix == "example"
+    assert issubclass(ExampleConstrainedFloat, BaseConstrainedTypedFloat)
     assert issubclass(ExampleConstrainedInt, BaseConstrainedTypedInt)
     assert issubclass(ExampleConstrainedString, BaseConstrainedTypedString)
     assert issubclass(ExampleInt, BaseTypedInt)
     assert issubclass(ExampleString, BaseTypedString)
     assert boolean_typings.ExampleBoolean is bool
-    assert float_typings.ExampleFloat is float
+    assert issubclass(ExampleFloat, BaseTypedFloat)
 
     assert_class_docstring_is_kept(ExampleDeterministicId)
     assert_class_docstring_is_kept(ExampleRandomId)
     assert_class_docstring_is_kept(ExampleDeterministicPrefixedId)
     assert_class_docstring_is_kept(ExampleRandomPrefixedId)
+    assert_class_docstring_is_kept(ExampleConstrainedFloat)
     assert_class_docstring_is_kept(ExampleConstrainedInt)
     assert_class_docstring_is_kept(ExampleConstrainedString)
     assert_class_docstring_is_kept(ExampleInt)
     assert_class_docstring_is_kept(ExampleString)
     assert_module_docstring_mentions(boolean_typings, "ExampleBoolean")
-    assert_module_docstring_mentions(float_typings, "ExampleFloat")
 
 
 def assert_class_docstring_is_kept(example_class: type[object]) -> None:

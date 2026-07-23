@@ -55,3 +55,6 @@ class ExampleRandomPrefixedId(BasePrefixedTypedId):
     """
 
     prefix = "example"
+
+
+# Keep abc order for all non example types, if possible.

@@ -6,7 +6,9 @@ SCHEMA_DIRECTORY_PATHS: tuple[str, ...] = (
     "app/schemas/dto",
     "app/schemas/domain",
 )
-RAW_PRIMITIVE_NAMES: frozenset[str] = frozenset({"str", "int", "UUID"})
+RAW_PRIMITIVE_NAMES: frozenset[str] = frozenset(
+    {"str", "int", "float", "UUID"},
+)
 ALLOWED_RAW_PRIMITIVE_FIELD_PATHS: list[str] = []
 
 
@@ -53,9 +55,9 @@ def collect_raw_primitive_fields(
 ) -> list[RawPrimitiveField]:
     module_source: str = schema_module_path.read_text(encoding="utf-8")
     module_ast: ast.Module = ast.parse(module_source, filename=str(schema_module_path))
-    relative_module_path: str = (
-        schema_module_path.relative_to(project_root_path).as_posix()
-    )
+    relative_module_path: str = schema_module_path.relative_to(
+        project_root_path
+    ).as_posix()
     raw_primitive_fields: list[RawPrimitiveField] = []
 
     for module_statement in module_ast.body:

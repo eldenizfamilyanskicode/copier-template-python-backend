@@ -12,19 +12,24 @@ directory, read the relevant example file first:
 - `integers.py` for domain integers.
 - `constrained_integers.py` for domain integers with reusable value invariants.
 - `booleans.py` for boolean aliases.
-- `floats.py` for float aliases.
+- `floats.py` for domain finite floats.
+- `constrained_floats.py` for domain finite floats with reusable range
+  invariants.
 
-When a string or integer constraint is an invariant of a named domain type,
-declare it on a `BaseConstrainedTypedString` or `BaseConstrainedTypedInt`
-subclass. Do not compose reusable domain primitives from `Annotated`,
-`AfterValidator`, or `StringConstraints`.
+When a string, integer, or float constraint is an invariant of a named domain
+type, declare it on the matching `BaseConstrainedTypedString`,
+`BaseConstrainedTypedInt`, or `BaseConstrainedTypedFloat` subclass. Float
+constraints support only exact finite `float` bounds with `gt`, `ge`, `lt`, or
+`le`; do not invent `multiple_of` semantics for binary floating point. Do not
+compose reusable domain primitives from `Annotated`, `AfterValidator`, or
+`StringConstraints`.
 
 Each typed primitive represents exactly one domain meaning. Validation,
 transformation, string processing, and arithmetic are semantic boundaries. Do
 not reconstruct the source type after such an operation. Validate the result
 and construct a different, explicitly named primitive when the result has a
-domain meaning. A plain `str` or `int` result deliberately signals that the
-source semantic guarantee has been lost.
+domain meaning. A plain `str`, `int`, or `float` result deliberately signals
+that the source semantic guarantee has been lost.
 
 Semantic stages must be sibling types. For example,
 `RawUserInput(BaseTypedString)` becomes

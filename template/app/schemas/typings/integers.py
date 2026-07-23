@@ -29,4 +29,5 @@ class ExampleInt(BaseTypedInt):
         assert type(example_count + 1) is int
     """
 
+
 # Keep abc order for all non example types, if possible.

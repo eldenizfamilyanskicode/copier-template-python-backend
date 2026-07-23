@@ -27,3 +27,6 @@ class ExampleString(BaseTypedString):
         assert type(example_name) is ExampleString
         assert type(example_name.upper()) is str
     """
+
+
+# Keep abc order for all non example types, if possible.
