@@ -16,6 +16,13 @@ directory, read the relevant example file first:
 - `constrained_floats.py` for domain finite floats with reusable range
   invariants.
 
+When project primitive files grow large by mixing meanings from different
+bounded contexts, place project-owned primitives under
+`typings/<bounded_context>/<allowed_name>.py`. The allowed leaf names are the
+example filenames listed above. A bounded context must express domain ownership,
+not a technical layer or a generic bucket such as `common`; keep package
+`__init__.py` files empty and import primitives directly from their owning file.
+
 When a string, integer, or float constraint is an invariant of a named domain
 type, declare it on the matching `BaseConstrainedTypedString`,
 `BaseConstrainedTypedInt`, or `BaseConstrainedTypedFloat` subclass. Float
